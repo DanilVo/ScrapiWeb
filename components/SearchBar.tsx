@@ -7,13 +7,7 @@ const isValidAmazonProductURL = (url: string) => {
   try {
     const parseURL = new URL(url);
     const hostname = parseURL.hostname;
-    if (
-      hostname.includes("amazon.com") ||
-      hostname.includes("amazon.") ||
-      hostname.endsWith("amazon")
-    ) {
-      return true;
-    }
+    return hostname
   } catch (error) {
     return false;
   }
