@@ -1,12 +1,12 @@
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
-import Product from '../modals/product.modal';
-import { connectToDB } from '../mongoose';
-import { scrapeAmazonProduct } from '../scraper';
-import { getAveragePrice, getHighestPrice, getLowestPrice } from '../utils';
-import { User } from '@/types';
-import { generateEmailBody, sendEmail } from '../nodemailer';
+import { revalidatePath } from "next/cache";
+import Product from "../modals/product.modal";
+import { connectToDB } from "../mongoose";
+import { scrapeAmazonProduct } from "../scraper";
+import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
+import { EmailContent, User } from "@/types";
+import { generateEmailBody, sendEmail } from "../nodemailer";
 
 export async function scrapeAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
@@ -100,16 +100,15 @@ export async function addUserEmailToProduct(
       (user: User) => user.email === userEmail
     );
 
-    if(!userExists) {
-      product.users.push({email:userEmail});
-    
-      await product.save()
+    if (!userExists) {
+      product.users.push({ email: userEmail });
 
-      const emailContent = await generateEmailBody(product,"WELCOME")
+      await product.save();
 
-      await sendEmail(emailContent, [userEmail])
+      const emailContent = await generateEmailBody(product, "WELCOME");
+
+      await sendEmail(emailContent, [userEmail]);
     }
-
   } catch (error) {
     console.log(error);
   }
