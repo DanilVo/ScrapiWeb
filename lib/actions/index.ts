@@ -1,12 +1,12 @@
 "use server";
 
+import { User } from "@/types";
 import { revalidatePath } from "next/cache";
 import Product from "../modals/product.modal";
 import { connectToDB } from "../mongoose";
+import { generateEmailBody, sendEmail } from "../nodemailer";
 import { scrapeAmazonProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
-import { EmailContent, User } from "@/types";
-import { generateEmailBody, sendEmail } from "../nodemailer";
 
 export async function scrapeAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
